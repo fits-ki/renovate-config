@@ -1,16 +1,27 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "description": "Shared Renovate baseline for all kepler repositories. Repos consume this via \"extends\": [\"github>fits-ki/renovate-config\"] and keep only project-specific settings locally.",
-  "extends": ["config:recommended"],
+  "extends": [
+    "config:recommended",
+    ":separateMultipleMajorReleases",
+    "group:react"
+  ],
   "baseBranchPatterns": ["develop"],
   "timezone": "Europe/Berlin",
   "schedule": ["* 0-7 * * 1"],
   "updateNotScheduled": false,
-  "minimumReleaseAge": "3 days",
+  "minimumReleaseAge": "7 days",
   "internalChecksFilter": "strict",
   "dependencyDashboard": true,
   "automerge": false,
+  "platformAutomerge": false,
   "osvVulnerabilityAlerts": true,
+  "ignoreUnstable": true,
+  "ignoreScripts": true,
+  "ignorePlugins": true,
+  "semanticCommits": "enabled",
+  "pinDigests": true,
+  "postUpdateOptions": ["pnpmDedupe"],
   "labels": ["dependencies"],
   "prHourlyLimit": 2,
   "prConcurrentLimit": 3,
@@ -18,9 +29,6 @@
   "lockFileMaintenance": {
     "enabled": true,
     "schedule": ["* 0-7 * * 1"]
-  },
-  "github-actions": {
-    "pinDigests": true
   },
   "vulnerabilityAlerts": {
     "enabled": true,
@@ -30,6 +38,7 @@
     "groupName": null,
     "dependencyDashboardApproval": false,
     "prConcurrentLimit": 0,
+    "prHourlyLimit": 0,
     "branchConcurrentLimit": 0,
     "automerge": false,
     "labels": ["dependencies", "security"]

@@ -30,14 +30,22 @@ all consuming repositories on their next Renovate run.
   blocks routine branch updates outside the window.
 - `automerge: false` everywhere; there is no branch protection, so every merge is a
   manual, reviewed decision.
-- `minimumReleaseAge: 3 days` and `internalChecksFilter: strict` hold back
-  freshly published releases.
+- `minimumReleaseAge: 7 days` and `internalChecksFilter: strict` hold back
+  freshly published releases (supply-chain margin; with the weekly cadence the
+  extra delay is negligible).
+- `platformAutomerge: false`, `ignoreUnstable: true` (explicit), `ignoreScripts`
+  and `ignorePlugins` (no install-time scripts/plugins during updates),
+  `semanticCommits` for conventional-commit PR titles, `pinDigests: true`
+  globally (Docker images and GitHub Actions pinned to digests),
+  `postUpdateOptions: pnpmDedupe` for pnpm lockfile hygiene.
+- Extended presets: `:separateMultipleMajorReleases` (one PR per major version)
+  and `group:react` (react/react-dom batched where present).
 - Rate limits: `prHourlyLimit: 2`, `prConcurrentLimit: 3`, `branchConcurrentLimit: 3`.
 - `dependencyDashboard: true` — the dashboard issue is the control surface for
   pending and approval-gated updates.
 - `osvVulnerabilityAlerts: true` adds the OSV feed next to GitHub's advisory data.
-- `github-actions.pinDigests: true` pins actions to commit SHAs; keep `# vX.Y.Z`
-  version comments on pinned actions.
+- `pinDigests: true` pins actions and Docker references to digests; keep
+  `# vX.Y.Z` version comments on pinned GitHub Actions.
 - Lockfile maintenance runs weekly in the same Monday window.
 - PR labels: `dependencies` on all PRs, `dependencies` + `security` on
   vulnerability PRs.
