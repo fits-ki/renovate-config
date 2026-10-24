@@ -1,0 +1,51 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": "Shared Renovate baseline for all kepler repositories. Repos consume this via \"extends\": [\"github>fits-ki/renovate-config\"] and keep only project-specific settings locally.",
+  "extends": ["config:recommended"],
+  "baseBranchPatterns": ["develop"],
+  "timezone": "Europe/Berlin",
+  "schedule": ["* 0-7 * * 1"],
+  "updateNotScheduled": false,
+  "minimumReleaseAge": "3 days",
+  "internalChecksFilter": "strict",
+  "dependencyDashboard": true,
+  "automerge": false,
+  "osvVulnerabilityAlerts": true,
+  "labels": ["dependencies"],
+  "prHourlyLimit": 2,
+  "prConcurrentLimit": 3,
+  "branchConcurrentLimit": 3,
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["* 0-7 * * 1"]
+  },
+  "github-actions": {
+    "pinDigests": true
+  },
+  "vulnerabilityAlerts": {
+    "enabled": true,
+    "schedule": ["at any time"],
+    "updateNotScheduled": true,
+    "minimumReleaseAge": null,
+    "groupName": null,
+    "dependencyDashboardApproval": false,
+    "prConcurrentLimit": 0,
+    "branchConcurrentLimit": 0,
+    "automerge": false,
+    "labels": ["dependencies", "security"]
+  },
+  "packageRules": [
+    {
+      "description": "Major upgrades require manual approval in the Dependency Dashboard",
+      "matchUpdateTypes": ["major"],
+      "dependencyDashboardApproval": true
+    },
+    {
+      "description": "Low-noise: batch compatible CI and infrastructure updates",
+      "matchManagers": ["github-actions", "dockerfile", "docker-compose", "devcontainer"],
+      "matchUpdateTypes": ["minor", "patch", "pin", "pinDigest", "digest"],
+      "matchJsonata": ["$not(enabled = false) and $not(dependencyDashboardApproval = true) and $not(isVulnerabilityAlert = true)"],
+      "groupName": "CI and infrastructure"
+    }
+  ]
+}
