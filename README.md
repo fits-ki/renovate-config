@@ -28,8 +28,11 @@ all consuming repositories on their next Renovate run.
 - All dependency PRs target `develop` only (`baseBranchPatterns`).
 - Routine updates run Mondays 00:00-08:00 Europe/Berlin; `updateNotScheduled: false`
   blocks routine branch updates outside the window.
-- `automerge: false` everywhere; there is no branch protection, so every merge is a
+- `automerge: false` everywhere — the top-level `false` is inherited by every
+  rule, with an explicit `automerge: false` additionally set on the
+  major-update rule and on vulnerability alerts — so every merge is a
   manual, reviewed decision.
+- `ignoreTests: false` keeps CI signal on dependency updates.
 - `minimumReleaseAge: 7 days` and `internalChecksFilter: strict` hold back
   freshly published releases (supply-chain margin; with the weekly cadence the
   extra delay is negligible).
@@ -49,6 +52,20 @@ all consuming repositories on their next Renovate run.
 - Lockfile maintenance runs weekly in the same Monday window.
 - PR labels: `dependencies` on all PRs, `dependencies` + `security` on
   vulnerability PRs.
+
+### Manual pilot — no automerge profile is active
+
+There is deliberately **no** active automerge opt-in profile yet. A future
+opt-in for a repository requires all of: verified branch protection on
+`develop`, a required merge-gate check that stays green, two successful
+routine cycles proving CI reliability, resolved local grouping/approval
+rules, and an explicit opt-in in that repository. Until then every merge
+stays manual.
+
+### Preset release flow
+
+`develop` -> `main` remains a separately approved release step; nothing here
+changes deployments, tariffs or repository protection settings.
 
 ### Package rules in the preset
 

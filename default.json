@@ -15,6 +15,7 @@
   "dependencyDashboard": true,
   "automerge": false,
   "platformAutomerge": false,
+  "ignoreTests": false,
   "osvVulnerabilityAlerts": true,
   "ignoreUnstable": true,
   "ignoreScripts": true,
@@ -47,7 +48,8 @@
     {
       "description": "Major upgrades require manual approval in the Dependency Dashboard",
       "matchUpdateTypes": ["major"],
-      "dependencyDashboardApproval": true
+      "dependencyDashboardApproval": true,
+      "automerge": false
     },
     {
       "description": "Low-noise: batch compatible CI and infrastructure updates",
