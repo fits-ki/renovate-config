@@ -24,5 +24,14 @@ jobs:
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: "24"
-      - name: Validate the resolved Renovate configuration
-        run: npx --yes --ignore-scripts --package=renovate@44.176.2 renovate-config-validator --strict default.json
+      - name: Test and validate the resolved repository preset
+        run: |
+          # Resolve the binary in npm's shell, after npm augments PATH.
+          # shellcheck disable=SC2016
+          npx --yes --ignore-scripts --package=renovate@44.176.2 --call '
+            set -eu
+            RENOVATE_VALIDATOR="$(command -v renovate-config-validator)"
+            export RENOVATE_VALIDATOR
+            node --test tests/validation.test.mjs
+            node scripts/validate-preset.mjs "$RENOVATE_VALIDATOR" default.json
+          '

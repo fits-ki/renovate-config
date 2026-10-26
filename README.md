@@ -105,5 +105,29 @@ release.**
    verify against one repo's dry run / dependency dashboard before assuming a
    fleet-wide effect.
 
-Validate before merging: `npx renovate-config-validator --strict default.json`
-(or the repo file after resolution).
+### Validation
+
+CI runs the Python baseline tests plus the actual repository-preset validator:
+
+```sh
+python3 -m unittest discover -s tests -v
+npx --yes --ignore-scripts --package=renovate@44.176.2 --call '
+  set -eu
+  RENOVATE_VALIDATOR="$(command -v renovate-config-validator)"
+  export RENOVATE_VALIDATOR
+  node --test tests/validation.test.mjs
+  node scripts/validate-preset.mjs "$RENOVATE_VALIDATOR" default.json
+'
+```
+
+The helper first runs `--strict --no-global` so global-only options are
+rejected. It then uses the **same pinned Renovate installation** to recursively
+resolve `extends`, validate the resulting repository configuration and reject
+inherited automerge activation. An unresolved preset is a failure, not a
+warning to ignore. The Node regression tests exercise this actual helper with
+valid and invalid temporary configurations; the real baseline remains unchanged.
+
+A plain `renovate-config-validator --strict default.json` is insufficient:
+explicit filenames default to global-config validation, and the CLI does not
+resolve top-level `extends`. The helper uses Renovate's internal resolver API;
+tool upgrades must pass the same regression tests before merging.

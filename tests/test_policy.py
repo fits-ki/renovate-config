@@ -111,5 +111,19 @@ class TestSecurityExceptions(unittest.TestCase):
                 self.assertIs(rule["automerge"], False)
 
 
+class TestValidationWorkflow(unittest.TestCase):
+    def test_ci_runs_the_real_validator_and_its_regressions(self):
+        path = os.path.join(REPO, ".github", "workflows", "checks.yml")
+        with open(path, "r", encoding="utf-8") as fh:
+            workflow = fh.read()
+        self.assertIn("node --test tests/validation.test.mjs", workflow)
+        self.assertIn(
+            'node scripts/validate-preset.mjs "$RENOVATE_VALIDATOR" default.json',
+            workflow)
+        self.assertIn("export RENOVATE_VALIDATOR", workflow)
+        self.assertIn("--ignore-scripts", workflow)
+        self.assertRegex(workflow, r"--package=renovate@\d+\.\d+\.\d+")
+
+
 if __name__ == "__main__":
     unittest.main()
