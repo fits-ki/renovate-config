@@ -88,15 +88,48 @@ class TestBaseline(unittest.TestCase):
             self.assertIs(rule.get("automerge"), False)
 
 
+class TestDashboardOnly(unittest.TestCase):
+    """Renovate must never open a branch/PR without a dashboard approval."""
+
+    ALL_UPDATE_TYPES = ["major", "minor", "patch", "pin", "pinDigest", "digest",
+                        "lockFileMaintenance", "rollback", "bump",
+                        "replacement"]
+
+    def test_global_approval_and_no_config_migration(self):
+        self.assertIs(CFG["dependencyDashboard"], True)
+        self.assertIs(CFG["dependencyDashboardApproval"], True)
+        self.assertIs(CFG["configMigration"], False)
+
+    def test_lock_file_maintenance_needs_approval(self):
+        lfm = CFG["lockFileMaintenance"]
+        self.assertIs(lfm["dependencyDashboardApproval"], True)
+        self.assertIs(lfm["automerge"], False)
+
+    def test_no_approval_opt_out_anywhere(self):
+        for key, value in walk(CFG):
+            if key == "dependencyDashboardApproval":
+                self.assertIs(value, True,
+                              "dependencyDashboardApproval must be true everywhere")
+
+    def test_last_rule_requires_approval_for_every_update_type(self):
+        last = CFG["packageRules"][-1]
+        self.assertEqual(last["matchUpdateTypes"], self.ALL_UPDATE_TYPES)
+        self.assertIs(last["dependencyDashboardApproval"], True)
+        self.assertIs(last["automerge"], False)
+        self.assertEqual(set(last) - {"description"},
+                         {"matchUpdateTypes", "dependencyDashboardApproval",
+                          "automerge"})
+
+
 class TestSecurityExceptions(unittest.TestCase):
-    def test_vulnerability_alerts_bypass_gates(self):
+    def test_vulnerability_alerts_need_approval_but_bypass_other_gates(self):
         va = CFG["vulnerabilityAlerts"]
         self.assertIs(va["enabled"], True)
         self.assertEqual(va["schedule"], ["at any time"])
         self.assertIs(va["updateNotScheduled"], True)
         self.assertIsNone(va["minimumReleaseAge"])
         self.assertIsNone(va["groupName"])
-        self.assertIs(va["dependencyDashboardApproval"], False)
+        self.assertIs(va["dependencyDashboardApproval"], True)
         self.assertEqual(va["prConcurrentLimit"], 0)
         self.assertEqual(va["prHourlyLimit"], 0)
         self.assertEqual(va["branchConcurrentLimit"], 0)
