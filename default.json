@@ -6,9 +6,13 @@
     ":separateMultipleMajorReleases",
     "group:react"
   ],
-  "baseBranchPatterns": ["develop"],
+  "baseBranchPatterns": [
+    "develop"
+  ],
   "timezone": "Europe/Berlin",
-  "schedule": ["* 0-7 * * 1"],
+  "schedule": [
+    "* 0-7 * * 1"
+  ],
   "updateNotScheduled": false,
   "minimumReleaseAge": "7 days",
   "internalChecksFilter": "strict",
@@ -24,20 +28,28 @@
   "ignorePlugins": true,
   "semanticCommits": "enabled",
   "pinDigests": true,
-  "postUpdateOptions": ["pnpmDedupe"],
-  "labels": ["dependencies"],
+  "postUpdateOptions": [
+    "pnpmDedupe"
+  ],
+  "labels": [
+    "dependencies"
+  ],
   "prHourlyLimit": 2,
   "prConcurrentLimit": 3,
   "branchConcurrentLimit": 3,
   "lockFileMaintenance": {
     "enabled": true,
-    "schedule": ["* 0-7 * * 1"],
+    "schedule": [
+      "* 0-7 * * 1"
+    ],
     "dependencyDashboardApproval": true,
     "automerge": false
   },
   "vulnerabilityAlerts": {
     "enabled": true,
-    "schedule": ["at any time"],
+    "schedule": [
+      "at any time"
+    ],
     "updateNotScheduled": true,
     "minimumReleaseAge": null,
     "groupName": null,
@@ -46,25 +58,61 @@
     "prHourlyLimit": 0,
     "branchConcurrentLimit": 0,
     "automerge": false,
-    "labels": ["dependencies", "security"]
+    "labels": [
+      "dependencies",
+      "security"
+    ]
   },
   "packageRules": [
     {
       "description": "Major upgrades require manual approval in the Dependency Dashboard",
-      "matchUpdateTypes": ["major"],
+      "matchUpdateTypes": [
+        "major"
+      ],
       "dependencyDashboardApproval": true,
       "automerge": false
     },
     {
       "description": "Low-noise: batch compatible CI and infrastructure updates",
-      "matchManagers": ["github-actions", "dockerfile", "docker-compose", "devcontainer"],
-      "matchUpdateTypes": ["minor", "patch", "pin", "pinDigest", "digest"],
-      "matchJsonata": ["$not(enabled = false) and $not(dependencyDashboardApproval = true) and $not(isVulnerabilityAlert = true)"],
+      "matchManagers": [
+        "github-actions",
+        "dockerfile",
+        "docker-compose",
+        "devcontainer"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "pin",
+        "pinDigest",
+        "digest"
+      ],
+      "matchJsonata": [
+        "$not(enabled = false) and $not(dependencyDashboardApproval = true) and $not(isVulnerabilityAlert = true)"
+      ],
       "groupName": "CI and infrastructure"
     },
     {
+      "description": "setup-php: github-tags digest lookup is unreliable with pinDigests; keep version updates without digest resolution warnings",
+      "matchPackageNames": [
+        "shivammathur/setup-php"
+      ],
+      "pinDigests": false
+    },
+    {
       "description": "Manual-only: every update type waits for an explicit Dependency Dashboard approval (no automatic branches or PRs); keep as the last preset rule",
-      "matchUpdateTypes": ["major", "minor", "patch", "pin", "pinDigest", "digest", "lockFileMaintenance", "rollback", "bump", "replacement"],
+      "matchUpdateTypes": [
+        "major",
+        "minor",
+        "patch",
+        "pin",
+        "pinDigest",
+        "digest",
+        "lockFileMaintenance",
+        "rollback",
+        "bump",
+        "replacement"
+      ],
       "dependencyDashboardApproval": true,
       "automerge": false
     }
