@@ -46,6 +46,15 @@ all consuming repositories on their next Renovate run.
 - Rate limits: `prHourlyLimit: 2`, `prConcurrentLimit: 3`, `branchConcurrentLimit: 3`.
 - `dependencyDashboard: true` — the dashboard issue is the control surface for
   pending and approval-gated updates.
+- **Dashboard-only (manual-first):** `dependencyDashboardApproval: true` at top
+  level, inside `lockFileMaintenance` and inside `vulnerabilityAlerts`, plus a
+  final package rule that requires approval for every update type (`major`,
+  `minor`, `patch`, `pin`, `pinDigest`, `digest`, `lockFileMaintenance`,
+  `rollback`, `bump`, `replacement`). Renovate creates no branch or PR on its
+  own; it only lists updates under "Pending Approval" in the Dependency
+  Dashboard. A branch/PR is created only after its checkbox is ticked there.
+  Repositories must not set `dependencyDashboardApproval: false` in local rules.
+- `configMigration: false` — no automatic config-migration PRs.
 - `osvVulnerabilityAlerts: true` adds the OSV feed next to GitHub's advisory data.
 - `pinDigests: true` pins actions and Docker references to digests; keep
   `# vX.Y.Z` version comments on pinned GitHub Actions.
@@ -74,13 +83,19 @@ changes deployments, tariffs or repository protection settings.
 2. **CI and infrastructure batch**: compatible (non-major) updates from
    `github-actions`, `dockerfile`, `docker-compose` and `devcontainer` managers are
    grouped into one `CI and infrastructure` PR, excluding anything disabled,
-   approval-gated or vulnerability-driven.
+   approval-gated or vulnerability-driven. Because every update is now
+   approval-gated, this group no longer forms; it is kept for a later opt-in.
+3. **Manual-only catch-all** (must stay last): every update type requires
+   Dependency Dashboard approval and keeps `automerge: false`.
 
-## Vulnerability updates — exceptions to every gate
+## Vulnerability updates — approval required, otherwise ungated
 
-Security updates bypass all routine gates by design: they run at any time, with no
-minimum release age, no grouping, no dashboard approval, no PR/branch limits —
-and still no automerge. **After a critical security PR lands on `develop`, ship it
+Renovate's built-in `vulnerabilityAlerts` default sets
+`dependencyDashboardApproval: false`; the preset overrides it with `true`, so
+security fixes also wait for a tick in the Dependency Dashboard. Once approved
+they run at any time, with no minimum release age, no grouping and no PR/branch
+limits — and still no automerge. Check the dashboard (and Dependabot alerts)
+regularly so security fixes are not left pending. **After a critical security PR lands on `develop`, ship it
 to `main` through the hotfix/release path instead of waiting for the next regular
 release.**
 
