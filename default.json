@@ -14,7 +14,7 @@
     "* 0-7 * * 1"
   ],
   "updateNotScheduled": false,
-  "minimumReleaseAge": "7 days",
+  "minimumReleaseAge": "3 days",
   "internalChecksFilter": "strict",
   "dependencyDashboard": true,
   "dependencyDashboardApproval": true,
