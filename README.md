@@ -33,7 +33,7 @@ all consuming repositories on their next Renovate run.
   major-update rule and on vulnerability alerts — so every merge is a
   manual, reviewed decision.
 - `ignoreTests: false` keeps CI signal on dependency updates.
-- `minimumReleaseAge: 7 days` and `internalChecksFilter: strict` hold back
+- `minimumReleaseAge: 3 days` and `internalChecksFilter: strict` hold back
   freshly published releases (supply-chain margin; with the weekly cadence the
   extra delay is negligible).
 - `platformAutomerge: false`, `ignoreUnstable: true` (explicit), `ignoreScripts`
