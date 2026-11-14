@@ -34,7 +34,7 @@ class TestBaseline(unittest.TestCase):
         self.assertIs(CFG["updateNotScheduled"], False)
 
     def test_age_limits_and_dashboard(self):
-        self.assertEqual(CFG["minimumReleaseAge"], "7 days")
+        self.assertEqual(CFG["minimumReleaseAge"], "3 days")
         self.assertEqual(CFG["internalChecksFilter"], "strict")
         self.assertIs(CFG["dependencyDashboard"], True)
         self.assertEqual(CFG["prHourlyLimit"], 2)
