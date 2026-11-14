@@ -81,7 +81,7 @@ changes deployments, tariffs or repository protection settings.
 1. **Major updates** require manual approval in the Dependency Dashboard
    (`dependencyDashboardApproval`).
 2. **CI and infrastructure batch**: compatible (non-major) updates from
-   `github-actions`, `dockerfile`, `docker-compose` and `devcontainer` managers are
+   `github-actions`, `dockerfile` and `docker-compose` managers are
    grouped into one `CI and infrastructure` PR, excluding anything disabled,
    approval-gated or vulnerability-driven. Because every update is now
    approval-gated, this group no longer forms; it is kept for a later opt-in.
