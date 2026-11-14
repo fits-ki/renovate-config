@@ -77,8 +77,7 @@
       "matchManagers": [
         "github-actions",
         "dockerfile",
-        "docker-compose",
-        "devcontainer"
+        "docker-compose"
       ],
       "matchUpdateTypes": [
         "minor",

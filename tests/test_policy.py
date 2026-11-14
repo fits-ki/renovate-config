@@ -61,8 +61,7 @@ class TestBaseline(unittest.TestCase):
         self.assertEqual(len(rules), 1)
         rule = rules[0]
         self.assertEqual(rule["matchManagers"],
-                         ["github-actions", "dockerfile", "docker-compose",
-                          "devcontainer"])
+                         ["github-actions", "dockerfile", "docker-compose"])
         self.assertEqual(rule["matchUpdateTypes"],
                          ["minor", "patch", "pin", "pinDigest", "digest"])
         self.assertEqual(rule["matchJsonata"], [
