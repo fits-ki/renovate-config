@@ -99,6 +99,16 @@
       "pinDigests": false
     },
     {
+      "description": "fits-ki/ci-workflows: reusable workflows are pinned to reviewed commit SHAs with non-tag comments (e.g. # CIW-16); disable lookup to avoid github-digest warnings",
+      "matchManagers": [
+        "github-actions"
+      ],
+      "matchPackageNames": [
+        "fits-ki/ci-workflows"
+      ],
+      "enabled": false
+    },
+    {
       "description": "Manual-only: every update type waits for an explicit Dependency Dashboard approval (no automatic branches or PRs); keep as the last preset rule",
       "matchUpdateTypes": [
         "major",
