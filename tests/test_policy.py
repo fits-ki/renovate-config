@@ -37,9 +37,9 @@ class TestBaseline(unittest.TestCase):
         self.assertEqual(CFG["minimumReleaseAge"], "3 days")
         self.assertEqual(CFG["internalChecksFilter"], "strict")
         self.assertIs(CFG["dependencyDashboard"], True)
-        self.assertEqual(CFG["prHourlyLimit"], 2)
-        self.assertEqual(CFG["prConcurrentLimit"], 3)
-        self.assertEqual(CFG["branchConcurrentLimit"], 3)
+        self.assertEqual(CFG["prHourlyLimit"], 1)
+        self.assertEqual(CFG["prConcurrentLimit"], 2)
+        self.assertEqual(CFG["branchConcurrentLimit"], 2)
 
     def test_update_hygiene_knobs(self):
         self.assertIs(CFG["ignoreUnstable"], True)
@@ -53,7 +53,7 @@ class TestBaseline(unittest.TestCase):
         self.assertIn(":separateMultipleMajorReleases", CFG["extends"])
         self.assertIn("config:recommended", CFG["extends"])
         self.assertIs(CFG["lockFileMaintenance"]["enabled"], True)
-        self.assertEqual(CFG["lockFileMaintenance"]["schedule"], ["* 0-7 * * 1"])
+        self.assertEqual(CFG["lockFileMaintenance"]["schedule"], ["* 0-6 * * 2"])
 
     def test_ci_infra_rule_preserved(self):
         rules = [r for r in CFG["packageRules"]
