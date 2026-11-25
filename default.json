@@ -34,13 +34,13 @@
   "labels": [
     "dependencies"
   ],
-  "prHourlyLimit": 2,
-  "prConcurrentLimit": 3,
-  "branchConcurrentLimit": 3,
+  "prHourlyLimit": 1,
+  "prConcurrentLimit": 2,
+  "branchConcurrentLimit": 2,
   "lockFileMaintenance": {
     "enabled": true,
     "schedule": [
-      "* 0-7 * * 1"
+      "* 0-6 * * 2"
     ],
     "dependencyDashboardApproval": true,
     "automerge": false

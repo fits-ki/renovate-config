@@ -43,7 +43,8 @@ all consuming repositories on their next Renovate run.
   `postUpdateOptions: pnpmDedupe` for pnpm lockfile hygiene.
 - Extended presets: `:separateMultipleMajorReleases` (one PR per major version)
   and `group:react` (react/react-dom batched where present).
-- Rate limits: `prHourlyLimit: 2`, `prConcurrentLimit: 3`, `branchConcurrentLimit: 3`.
+- Rate limits: `prHourlyLimit: 1`, `prConcurrentLimit: 2`, `branchConcurrentLimit: 2`
+  (throttles parallel Renovate bursts to protect the 10-slot `vps-dev-runner` pool).
 - `dependencyDashboard: true` — the dashboard issue is the control surface for
   pending and approval-gated updates.
 - **Dashboard-only (manual-first):** `dependencyDashboardApproval: true` at top
@@ -58,7 +59,8 @@ all consuming repositories on their next Renovate run.
 - `osvVulnerabilityAlerts: true` adds the OSV feed next to GitHub's advisory data.
 - `pinDigests: true` pins actions and Docker references to digests; keep
   `# vX.Y.Z` version comments on pinned GitHub Actions.
-- Lockfile maintenance runs weekly in the same Monday window.
+- Lockfile maintenance runs weekly on Tuesdays 00:00-07:00 Europe/Berlin
+  (`* 0-6 * * 2`), decoupled from the Monday routine update window.
 - PR labels: `dependencies` on all PRs, `dependencies` + `security` on
   vulnerability PRs.
 
